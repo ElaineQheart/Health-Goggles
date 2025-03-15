@@ -1,0 +1,11 @@
+name: HealthGoggles
+version: '1.0'
+main: me.elaineqheart.healthGoggles.HealthGoggles
+api-version: '1.21'
+authors: [ ElaineQheart ]
+website: https://www.youtube.com/@elaineqheart
+depend:
+  - packetevents
+commands:
+  goggles:
+    description: gives the player the goggles
