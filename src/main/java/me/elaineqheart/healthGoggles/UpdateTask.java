@@ -56,7 +56,7 @@ public class UpdateTask extends BukkitRunnable implements Listener {
             //if the helmet is not equipped
             if(data == null || !data.has(new NamespacedKey(plugin, "isHealthGoggle"))){
                 UUID id = p.getUniqueId();
-                if(mobs.containsKey(id)){
+                if(!mobs.containsKey(id)){
                     continue;
                 }
                 p.getPersistentDataContainer().set(new NamespacedKey(plugin, "hasHealthGogglesOn"), PersistentDataType.BOOLEAN, false);
