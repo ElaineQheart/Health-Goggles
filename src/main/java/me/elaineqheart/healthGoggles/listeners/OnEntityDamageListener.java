@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -25,24 +26,22 @@ public class OnEntityDamageListener implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event){
         Entity entity = event.getEntity();
-        for(Player p : Bukkit.getOnlinePlayers()){
-            if(Objects.equals(p.getPersistentDataContainer().get(new NamespacedKey(plugin, "hasHealthGogglesOn"), PersistentDataType.BOOLEAN), false)){
-                continue;
-            }
-            p.getNearbyEntities(20,20,20).forEach(e -> {
-                if(e.equals(entity)){
-                    Bukkit.getScheduler().runTaskLater(plugin, () ->{
-                        UpdateTask.showHealth(p,e);
-                    }, 1);
-
-                }
-            });
-        }
+        update(entity);
     }
 
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event){
         Entity entity = event.getEntity();
+        update(entity);
+    }
+
+    @EventHandler
+    public void onEntityHeal(EntityRegainHealthEvent event){
+        Entity entity = event.getEntity();
+        update(entity);
+    }
+
+    public void update(Entity entity){
         for(Player p : Bukkit.getOnlinePlayers()){
             if(Objects.equals(p.getPersistentDataContainer().get(new NamespacedKey(plugin, "hasHealthGogglesOn"), PersistentDataType.BOOLEAN), false)){
                 continue;

@@ -55,15 +55,21 @@ public class UpdateTask extends BukkitRunnable implements Listener {
 
             //if the helmet is not equipped
             if(data == null || !data.has(new NamespacedKey(plugin, "isHealthGoggle"))){
-                if(Objects.equals(p.getPersistentDataContainer().get(new NamespacedKey(plugin, "hasHealthGogglesOn"), PersistentDataType.BOOLEAN), false)) {
+                UUID id = p.getUniqueId();
+                if(mobs.containsKey(id)){
                     continue;
                 }
                 p.getPersistentDataContainer().set(new NamespacedKey(plugin, "hasHealthGogglesOn"), PersistentDataType.BOOLEAN, false);
                 //REMOVE THE DISPLAYS
+                List<Integer> list = new ArrayList<>();
+                list = mobs.get(id);
                 for(Entity e : p.getNearbyEntities(20,20,20)) {
-                    hideHealth(p,e);
+                    if(list.contains(e.getEntityId())){
+                        hideHealth(p,e);
+                        list.remove(Integer.valueOf(e.getEntityId()));
+                    }
                 }
-                mobs.remove(p.getUniqueId());
+                mobs.put(id,list);
                 continue;
             }
             if(Objects.equals(p.getPersistentDataContainer().get(new NamespacedKey(plugin, "hasHealthGogglesOn"), PersistentDataType.BOOLEAN), false)){
